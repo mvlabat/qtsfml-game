@@ -76,27 +76,15 @@ void QSFMLCanvas::OnInit()
 
 void QSFMLCanvas::OnUpdate()
 {
-    sf::Event event;
-    while (pollEvent(event)) {
-        switch(event.type)
-        {
-            case (sf::Event::MouseButtonPressed) :
-                qDebug() << "mouse clicked"; // Event never handled
-                //mousePressedEventHandling(event);
-                break;
-            case (sf::Event::MouseMoved) :
-                qDebug() << "mouse moved"; // Event handled
-                //mouseMovedEventHandling(event);
-                break;
-            case (sf::Event::KeyPressed) :
-                qDebug() << "key pressed"; // Event handled
-                break;
-            default:
-                break;
-        }
-
-    }
     // Clear screen
     clear(sf::Color(0, 0, 0));
     engine.render();
+}
+
+void QSFMLCanvas::keyPressEvent(QKeyEvent *keyEvent)
+{
+}
+
+void QSFMLCanvas::keyReleaseEvent(QKeyEvent *keyEvent)
+{
 }

@@ -5,25 +5,17 @@ Engine::Engine(sf::RenderTarget *p_renderTarget, GameSettings *p_settings) :
     renderTarget(p_renderTarget),
     settings(p_settings),
     tree(compare),
-    gameData(new GameData()),
-    level(new Level(gameData)),
-    font(),
-    fpsText(new RenderableText(9999)),
-    frames(0),
-    fpsTimer(new QTimer(this))
+    level(&gameData),
+    fpsText(9999)
 {
-    fpsTimer->setInterval(1000);
-    connect(fpsTimer, SIGNAL(timeout()), this, SLOT(countFps()));
-    fpsTimer->start();
-
     if (font.loadFromFile("font.ttf"))
     {
-        fpsText->setFont(font);
-        fpsText->setString("fps: ");
-        fpsText->setCharacterSize(10);
-        fpsText->setColor(sf::Color(255, 255, 255));
-        fpsText->coords = sf::Vector2i(20, 20);
-        addToRenderQueue((QueueableObject*)fpsText);
+        fpsText.setFont(font);
+        fpsText.setString("fps: ");
+        fpsText.setCharacterSize(10);
+        fpsText.setColor(sf::Color(255, 255, 255));
+        fpsText.coords = sf::Vector2i(20, 20);
+        addToRenderQueue((QueueableObject*)&fpsText);
     }
     else
     {
@@ -40,9 +32,6 @@ Engine::Engine(sf::RenderTarget *p_renderTarget, GameSettings *p_settings) :
 
 Engine::~Engine()
 {
-    delete gameData;
-    delete level;
-    delete fpsText;
 }
 
 bool Engine::compare(QueueableObject *x, QueueableObject *y)
@@ -71,28 +60,33 @@ void Engine::countFps()
 {
     char text[255];
     sprintf(text, "fps: %d", frames);
-    fpsText->setString(text);
+    fpsText.setString(text);
     frames = 0;
 }
 
-void Engine::parseGameData()
+void Engine::processGameData()
 {
-    if (gameData->hero.isQueueing && !gameData->hero.isQueued)
+    if (gameData.hero.isQueueing && !gameData.hero.isQueued)
     {
-        addToRenderQueue((QueueableObject *)gameData->hero.queueableObject);
-        gameData->hero.isQueued = true;
+        addToRenderQueue((QueueableObject *)gameData.hero.queueableObject);
+        gameData.hero.isQueued = true;
     }
-    else if (!gameData->hero.isQueueing && gameData->hero.isQueued)
+    else if (!gameData.hero.isQueueing && gameData.hero.isQueued)
     {
-        deleteFromRenderQueue((QueueableObject *)gameData->hero.queueableObject);
-        gameData->hero.isQueued = false;
+        deleteFromRenderQueue((QueueableObject *)gameData.hero.queueableObject);
+        gameData.hero.isQueued = false;
     }
+}
+
+void Engine::processKeyEvent()
+{
+
 }
 
 void Engine::render()
 {
     ++frames;
-    parseGameData();
+    processGameData();
 
     QueueableObject *object;
     TreeNode<QueueableObject *> *iterator = NULL;

@@ -2,6 +2,7 @@
 #define QSFMLCANVAS_H
 
 #include <QWidget>
+#include <QKeyEvent>
 #include <QTimer>
 #include <QMessageBox>
 #include <QDebug>
@@ -19,6 +20,8 @@ public:
 protected:
     virtual void OnInit();
     virtual void OnUpdate();
+    void keyPressEvent(QKeyEvent *);
+    void keyReleaseEvent(QKeyEvent *);
 private:
     virtual QPaintEngine* paintEngine() const;
     virtual void showEvent(QShowEvent*);

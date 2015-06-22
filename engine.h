@@ -6,7 +6,7 @@
 #include <functional>
 #include <SFML/Graphics.hpp>
 #include <QDebug>
-#include <QTimer>
+#include <QTime>
 #include <QPushButton>
 
 #include "gamesettings.h"
@@ -23,18 +23,27 @@ class Engine: public QObject
 
     friend class QSFMLCanvas;
 protected:
+    // Reference to the main (parent) widget for drawing.
     sf::RenderTarget *renderTarget;
+    // Class which manages game settings.
     GameSettings *settings;
+    // BST which is used for ordering drawed object by z-index.
     BinarySearchTree<QueueableObject *> tree;
-    GameData *gameData;
-    Level *level;
+    // Class which manages all the game (current level) data.
+    GameData gameData;
+    // Class which manages loading a level.
+    Level level;
+    // Default font.
     sf::Font font;
-    RenderableText *fpsText;
+    // Text for rendering fps count.
+    RenderableText fpsText;
+    // FPS counter.
     int frames;
-    QTimer *fpsTimer;
-    QPushButton *button;
+    // Variable which stores system time of last fps output.
+    QTime fpsTimer;
 
-    void parseGameData();
+    void processGameData();
+    void processKeyEvent();
     void render();
 public:
     Engine(sf::RenderTarget *p_renderTarget, GameSettings *p_settings);
