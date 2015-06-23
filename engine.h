@@ -8,8 +8,10 @@
 #include <QDebug>
 #include <QTime>
 #include <QPushButton>
+#include <QKeyEvent>
 
 #include "gamesettings.h"
+#include "controls.h"
 #include "level.h"
 #include "gamedata.h"
 #include "renderableobject.h"
@@ -27,6 +29,8 @@ protected:
     sf::RenderTarget *renderTarget;
     // Class which manages game settings.
     GameSettings *settings;
+    // Class which manages game controls.
+    Controls controls;
     // BST which is used for ordering drawed object by z-index.
     BinarySearchTree<QueueableObject *> tree;
     // Class which manages all the game (current level) data.
@@ -43,7 +47,8 @@ protected:
     QTime fpsTimer;
 
     void processGameData();
-    void processKeyEvent();
+    void processPressedKeyEvent(QKeyEvent *);
+    void processReleasedKeyEvent(QKeyEvent *);
     void render();
 public:
     Engine(sf::RenderTarget *p_renderTarget, GameSettings *p_settings);

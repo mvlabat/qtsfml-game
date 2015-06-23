@@ -12,7 +12,7 @@ protected:
     RenderableSprite *queueableObject;
     uint healthPoints;
     uint maxHealthPoints;
-    sf::Vector2i coords;
+    sf::Vector2f coords;
     bool isQueued;
 public:
     GameObject(RenderableSprite *p_queueableObject);
@@ -25,6 +25,18 @@ public:
 
     // Defines if this object has to be added to the rendering queue.
     bool isQueueing;
+};
+
+enum Direction {
+    up,
+    upright,
+    right,
+    downright,
+    down,
+    downleft,
+    left,
+    upleft,
+    none,
 };
 
 #endif // GAMEOBJECT_H

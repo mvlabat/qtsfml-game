@@ -8,6 +8,8 @@ Engine::Engine(sf::RenderTarget *p_renderTarget, GameSettings *p_settings) :
     level(&gameData),
     fpsText(9999)
 {
+    controls.setControlledHero(&gameData.hero);
+
     if (font.loadFromFile("font.ttf"))
     {
         fpsText.setFont(font);
@@ -25,7 +27,6 @@ Engine::Engine(sf::RenderTarget *p_renderTarget, GameSettings *p_settings) :
     std::vector<sf::VideoMode> modes = sf::VideoMode::getFullscreenModes();
     for (std::vector<sf::VideoMode>::iterator it = modes.begin(); it != modes.end(); ++it)
     {
-
         qDebug() << (*it).width << ":" << (*it).height << ":" << (*it).bitsPerPixel;
     }
 }
@@ -78,9 +79,14 @@ void Engine::processGameData()
     }
 }
 
-void Engine::processKeyEvent()
+void Engine::processPressedKeyEvent(QKeyEvent *event)
 {
+    controls.processPressedHeroControls(event);
+}
 
+void Engine::processReleasedKeyEvent(QKeyEvent *event)
+{
+    controls.processReleasedHeroControls(event);
 }
 
 void Engine::render()

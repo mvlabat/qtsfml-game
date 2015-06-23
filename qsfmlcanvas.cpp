@@ -83,8 +83,10 @@ void QSFMLCanvas::OnUpdate()
 
 void QSFMLCanvas::keyPressEvent(QKeyEvent *keyEvent)
 {
+    engine.processPressedKeyEvent(keyEvent);
 }
 
 void QSFMLCanvas::keyReleaseEvent(QKeyEvent *keyEvent)
 {
+    engine.processReleasedKeyEvent(keyEvent);
 }
