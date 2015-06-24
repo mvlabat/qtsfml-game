@@ -28,15 +28,15 @@ public:
 };
 
 enum Direction {
-    up,
-    upright,
-    right,
-    downright,
-    down,
-    downleft,
-    left,
-    upleft,
-    none,
+    Up,
+    UpRight,
+    Right,
+    DownRight,
+    Down,
+    DownLeft,
+    Left,
+    UpLeft,
+    None,
 };
 
 #endif // GAMEOBJECT_H

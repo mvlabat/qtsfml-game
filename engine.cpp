@@ -6,7 +6,9 @@ Engine::Engine(sf::RenderTarget *p_renderTarget, GameSettings *p_settings) :
     settings(p_settings),
     tree(compare),
     level(&gameData),
-    fpsText(9999)
+    fpsText(9999),
+    frames(0),
+    fpsTimer(QTime::currentTime())
 {
     controls.setControlledHero(&gameData.hero);
 
@@ -16,7 +18,7 @@ Engine::Engine(sf::RenderTarget *p_renderTarget, GameSettings *p_settings) :
         fpsText.setString("fps: ");
         fpsText.setCharacterSize(10);
         fpsText.setColor(sf::Color(255, 255, 255));
-        fpsText.coords = sf::Vector2i(20, 20);
+        fpsText.coords = sf::Vector2i(0, 0);
         addToRenderQueue((QueueableObject*)&fpsText);
     }
     else
@@ -89,15 +91,24 @@ void Engine::processReleasedKeyEvent(QKeyEvent *event)
     controls.processReleasedHeroControls(event);
 }
 
+class Test: public sf::Drawable, public sf::Transformable { };
+
 void Engine::render()
 {
     ++frames;
     processGameData();
 
     QueueableObject *object;
-    TreeNode<QueueableObject *> *iterator = NULL;
+    /*TreeNode<QueueableObject *> *iterator = NULL;
     while ((object = tree.iterate(iterator)) != NULL)
     {
-        renderTarget->draw(*object);
-    }
+        object->setPosition(round(object->coords.x), round(object->coords.y));
+        renderTarget->draw(*(sf::Drawable *)object);
+    }*/
+    QueueableObject *a = (QueueableObject *)&fpsText;
+    QueueableObject *b = (QueueableObject *)gameData.hero.queueableObject;
+    qDebug() << a->getZIndex() << " " << fpsText.getZIndex();
+    qDebug() << b->getZIndex() << " " << gameData.hero.queueableObject->getZIndex();
+    renderTarget->draw(*a);
+    renderTarget->draw(*(sf::Drawable *)b);
 }

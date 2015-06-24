@@ -2,6 +2,7 @@
 
 GameObject::GameObject(RenderableSprite *p_queueableObject) :
     queueableObject(p_queueableObject),
+    coords(sf::Vector2f(0, 0)),
     isQueued(false),
     isQueueing(true)
 {

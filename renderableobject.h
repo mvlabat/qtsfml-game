@@ -32,24 +32,28 @@ public:
     unsigned int getZIndex();
 };
 
-class QueueableObject: public RenderableObject, public sf::Drawable
+class QueueableObject: public sf::Drawable, public sf::Transformable, public RenderableObject
 {
 };
 
-class RenderableSprite: public RenderableObject, public sf::Sprite
+class QueueableObject2: public sf::Drawable, public sf::Transformable
+{
+};
+
+class RenderableSprite: public sf::Sprite, public RenderableObject
 {
 public:
     RenderableSprite(unsigned int _zIndex);
     sf::Texture texture;
 };
 
-class RenderableRectangle: public RenderableObject, public sf::RectangleShape
+class RenderableRectangle: public sf::RectangleShape, public RenderableObject
 {
 public:
     RenderableRectangle(unsigned int _zIndex);
 };
 
-class RenderableText: public RenderableObject, public sf::Text
+class RenderableText: public sf::Text, public RenderableObject
 {
 public:
     RenderableText(unsigned int _zIndex);

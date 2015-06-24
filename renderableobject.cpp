@@ -25,8 +25,8 @@ unsigned int RenderableObject::getZIndex()
  */
 
 RenderableText::RenderableText(unsigned int _zIndex) :
-    RenderableObject::RenderableObject(_zIndex),
-    sf::Text::Text()
+    //sf::Text::Text(),
+    RenderableObject::RenderableObject(_zIndex)
 {
 }
 
@@ -35,8 +35,8 @@ RenderableText::RenderableText(unsigned int _zIndex) :
  */
 
 RenderableSprite::RenderableSprite(unsigned int _zIndex) :
-    RenderableObject::RenderableObject(_zIndex),
-    sf::Sprite::Sprite()
+    //sf::Sprite::Sprite(),
+    RenderableObject::RenderableObject(_zIndex)
 {
 
 }
