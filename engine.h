@@ -32,9 +32,9 @@ protected:
     // Class which manages game controls.
     Controls controls;
     // BST which is used for ordering drawed object by z-index.
-    BinarySearchTree<QueueableObject *> tree;
+    BinarySearchTree<RenderableObject *> tree;
     // Class which manages all the game (current level) data.
-    GameData gameData;
+    GameData *gameData;
     // Class which manages loading a level.
     Level level;
     // Default font.
@@ -53,9 +53,9 @@ protected:
 public:
     Engine(sf::RenderTarget *p_renderTarget, GameSettings *p_settings);
     ~Engine();
-    static bool compare(QueueableObject *x, QueueableObject *y);
-    void addToRenderQueue(QueueableObject *object);
-    void deleteFromRenderQueue(QueueableObject *object);
+    static bool compare(RenderableObject *x, RenderableObject *y);
+    void addToRenderQueue(RenderableObject *object);
+    void deleteFromRenderQueue(RenderableObject *object);
 
 protected slots:
     void countFps();

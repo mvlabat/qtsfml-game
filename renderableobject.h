@@ -27,36 +27,54 @@ public:
     // Specifying parent object makes 'coords' variable relative.
     RenderableObject *parentObject;
 
+    RenderableObject();
     RenderableObject(unsigned int _zIndex);
     ~RenderableObject();
-    unsigned int getZIndex();
+    const unsigned int getZIndex();
+    virtual sf::Transformable *getTransofmable() = 0;
+    virtual sf::Drawable *getDrawable() = 0;
 };
 
-class QueueableObject: public sf::Drawable, public sf::Transformable, public RenderableObject
+/*class QueueableObject: public sf::Drawable, public sf::Transformable, public RenderableObject
 {
-};
+    QueueableObject() :
+        sf::Drawable(),
+        sf::Transformable(),
+        RenderableObject(3)
+    {
 
-class QueueableObject2: public sf::Drawable, public sf::Transformable
-{
-};
+    }
+};*/
 
-class RenderableSprite: public sf::Sprite, public RenderableObject
+class RenderableSprite: public RenderableObject
 {
 public:
-    RenderableSprite(unsigned int _zIndex);
+    sf::Sprite sprite;
     sf::Texture texture;
+
+    RenderableSprite(unsigned int _zIndex);
+    sf::Transformable *getTransofmable() override;
+    sf::Drawable *getDrawable() override;
 };
 
-class RenderableRectangle: public sf::RectangleShape, public RenderableObject
+class RenderableRectangle: public RenderableObject
 {
 public:
+    sf::RectangleShape rectangle;
+
     RenderableRectangle(unsigned int _zIndex);
+    sf::Transformable *getTransofmable() override;
+    sf::Drawable *getDrawable() override;
 };
 
-class RenderableText: public sf::Text, public RenderableObject
+class RenderableText: public RenderableObject
 {
 public:
+    sf::Text text;
+
     RenderableText(unsigned int _zIndex);
+    sf::Transformable *getTransofmable() override;
+    sf::Drawable *getDrawable() override;
 };
 
 #endif // RENDEREDOBJECT_H

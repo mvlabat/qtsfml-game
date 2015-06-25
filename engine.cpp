@@ -5,21 +5,22 @@ Engine::Engine(sf::RenderTarget *p_renderTarget, GameSettings *p_settings) :
     renderTarget(p_renderTarget),
     settings(p_settings),
     tree(compare),
-    level(&gameData),
+    gameData(new GameData()),
+    level(gameData),
     fpsText(9999),
     frames(0),
     fpsTimer(QTime::currentTime())
 {
-    controls.setControlledHero(&gameData.hero);
+    controls.setControlledHero(&gameData->hero);
 
     if (font.loadFromFile("font.ttf"))
     {
-        fpsText.setFont(font);
-        fpsText.setString("fps: ");
-        fpsText.setCharacterSize(10);
-        fpsText.setColor(sf::Color(255, 255, 255));
+        fpsText.text.setFont(font);
+        fpsText.text.setString("fps: ");
+        fpsText.text.setCharacterSize(10);
+        fpsText.text.setColor(sf::Color(255, 255, 255));
         fpsText.coords = sf::Vector2i(0, 0);
-        addToRenderQueue((QueueableObject*)&fpsText);
+        addToRenderQueue(&fpsText);
     }
     else
     {
@@ -35,9 +36,10 @@ Engine::Engine(sf::RenderTarget *p_renderTarget, GameSettings *p_settings) :
 
 Engine::~Engine()
 {
+    delete gameData;
 }
 
-bool Engine::compare(QueueableObject *x, QueueableObject *y)
+bool Engine::compare(RenderableObject *x, RenderableObject *y)
 {
     if (x->getZIndex() <= y->getZIndex())
     {
@@ -49,12 +51,12 @@ bool Engine::compare(QueueableObject *x, QueueableObject *y)
     }
 }
 
-void Engine::addToRenderQueue(QueueableObject *object)
+void Engine::addToRenderQueue(RenderableObject *object)
 {
     tree.insert(object);
 }
 
-void Engine::deleteFromRenderQueue(QueueableObject *object)
+void Engine::deleteFromRenderQueue(RenderableObject *object)
 {
     tree.remove(object);
 }
@@ -63,21 +65,26 @@ void Engine::countFps()
 {
     char text[255];
     sprintf(text, "fps: %d", frames);
-    fpsText.setString(text);
+    fpsText.text.setString(text);
     frames = 0;
 }
 
 void Engine::processGameData()
 {
-    if (gameData.hero.isQueueing && !gameData.hero.isQueued)
+    qDebug() << gameData->hero.direction;
+    gameData->hero.move();
+    gameData->hero.renderableObject->coords.x = round(gameData->hero.coords.x);
+    gameData->hero.renderableObject->coords.y = round(gameData->hero.coords.y);
+    qDebug() << gameData->hero.coords.x << gameData->hero.coords.y;
+    if (gameData->hero.isQueueing && !gameData->hero.isQueued)
     {
-        addToRenderQueue((QueueableObject *)gameData.hero.queueableObject);
-        gameData.hero.isQueued = true;
+        addToRenderQueue(gameData->hero.renderableObject);
+        gameData->hero.isQueued = true;
     }
-    else if (!gameData.hero.isQueueing && gameData.hero.isQueued)
+    else if (!gameData->hero.isQueueing && gameData->hero.isQueued)
     {
-        deleteFromRenderQueue((QueueableObject *)gameData.hero.queueableObject);
-        gameData.hero.isQueued = false;
+        deleteFromRenderQueue(gameData->hero.renderableObject);
+        gameData->hero.isQueued = false;
     }
 }
 
@@ -98,17 +105,11 @@ void Engine::render()
     ++frames;
     processGameData();
 
-    QueueableObject *object;
-    /*TreeNode<QueueableObject *> *iterator = NULL;
+    RenderableObject *object;
+    TreeNode<RenderableObject *> *iterator = NULL;
     while ((object = tree.iterate(iterator)) != NULL)
     {
-        object->setPosition(round(object->coords.x), round(object->coords.y));
-        renderTarget->draw(*(sf::Drawable *)object);
-    }*/
-    QueueableObject *a = (QueueableObject *)&fpsText;
-    QueueableObject *b = (QueueableObject *)gameData.hero.queueableObject;
-    qDebug() << a->getZIndex() << " " << fpsText.getZIndex();
-    qDebug() << b->getZIndex() << " " << gameData.hero.queueableObject->getZIndex();
-    renderTarget->draw(*a);
-    renderTarget->draw(*(sf::Drawable *)b);
+        object->getTransofmable()->setPosition(object->coords.x, object->coords.y);
+        renderTarget->draw(*object->getDrawable());
+    }
 }

@@ -7,12 +7,13 @@ GameHero::GameHero() :
     isMovingLeft(false),
     isMovingRight(false),
     direction(Direction::None),
-    baseSpeed(40),
-    lastTimeMoved(QTime::currentTime())
+    baseSpeed(800),
+    lastTimeMoved(0)
 {
-    RenderableSprite *renderableHero = (RenderableSprite *)queueableObject;
+    timer.start();
+    RenderableSprite *renderableHero = (RenderableSprite *)renderableObject;
     renderableHero->texture.loadFromFile("molfar.png");
-    renderableHero->setTexture(renderableHero->texture);
+    renderableHero->sprite.setTexture(renderableHero->texture);
 }
 
 GameHero::~GameHero()
@@ -61,9 +62,12 @@ void GameHero::move()
     float length;
     float diagonalLength;
 
-    milliseconds = lastTimeMoved.msec() - QTime::currentTime().msec();
-    lastTimeMoved = QTime::currentTime();
-    length = baseSpeed * 100 / milliseconds;
+    chooseDirection();
+
+    milliseconds = timer.elapsed() - lastTimeMoved;
+    qDebug() << lastTimeMoved << timer.elapsed() << milliseconds;
+    lastTimeMoved = timer.elapsed();
+    length = (float)baseSpeed * milliseconds / 10000;
     diagonalLength = length / sqrt(2);
 
     switch (direction)
@@ -80,7 +84,7 @@ void GameHero::move()
         break;
     case Direction::DownRight:
         coords.y += diagonalLength;
-        coords.x -= diagonalLength;
+        coords.x += diagonalLength;
         break;
     case Direction::Down:
         coords.y += length;
@@ -96,6 +100,17 @@ void GameHero::move()
         coords.y -= diagonalLength;
         coords.x -= diagonalLength;
         break;
+    default:
+        lastTimeMoved = 0;
+        timer.restart();
+    }
+    if (coords.x > 400)
+    {
+        coords.x = 0;
+    }
+    if (coords.y > 400)
+    {
+        coords.y = 0;
     }
 }
 

@@ -1,7 +1,7 @@
 #include "gameobject.h"
 
 GameObject::GameObject(RenderableSprite *p_queueableObject) :
-    queueableObject(p_queueableObject),
+    renderableObject(p_queueableObject),
     coords(sf::Vector2f(0, 0)),
     isQueued(false),
     isQueueing(true)
@@ -10,7 +10,7 @@ GameObject::GameObject(RenderableSprite *p_queueableObject) :
 
 GameObject::~GameObject()
 {
-    delete queueableObject;
+    delete renderableObject;
 }
 
 void GameObject::setHealthPoints(uint points)

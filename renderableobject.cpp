@@ -4,6 +4,11 @@
  * RenderableObject abstract class definition.
  */
 
+RenderableObject::RenderableObject()
+{
+
+}
+
 RenderableObject::RenderableObject(unsigned int _zIndex) :
     hasCoordsPrepared(false),
     zIndex(_zIndex),
@@ -15,7 +20,7 @@ RenderableObject::~RenderableObject()
 {
 }
 
-unsigned int RenderableObject::getZIndex()
+const unsigned int RenderableObject::getZIndex()
 {
     return zIndex;
 }
@@ -25,9 +30,18 @@ unsigned int RenderableObject::getZIndex()
  */
 
 RenderableText::RenderableText(unsigned int _zIndex) :
-    //sf::Text::Text(),
     RenderableObject::RenderableObject(_zIndex)
 {
+}
+
+sf::Transformable *RenderableText::getTransofmable()
+{
+    return &text;
+}
+
+sf::Drawable *RenderableText::getDrawable()
+{
+    return &text;
 }
 
 /**
@@ -35,8 +49,30 @@ RenderableText::RenderableText(unsigned int _zIndex) :
  */
 
 RenderableSprite::RenderableSprite(unsigned int _zIndex) :
-    //sf::Sprite::Sprite(),
     RenderableObject::RenderableObject(_zIndex)
 {
+}
 
+sf::Transformable *RenderableSprite::getTransofmable()
+{
+    return &sprite;
+}
+
+sf::Drawable *RenderableSprite::getDrawable()
+{
+    return &sprite;
+}
+
+/**
+ * RenderableRectangle class definition.
+ */
+
+sf::Transformable *RenderableRectangle::getTransofmable()
+{
+    return &rectangle;
+}
+
+sf::Drawable *RenderableRectangle::getDrawable()
+{
+    return &rectangle;
 }

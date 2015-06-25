@@ -9,7 +9,7 @@ class GameObject
 {
     friend class Engine;
 protected:
-    RenderableSprite *queueableObject;
+    RenderableSprite *renderableObject;
     uint healthPoints;
     uint maxHealthPoints;
     sf::Vector2f coords;

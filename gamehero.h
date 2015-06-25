@@ -1,9 +1,11 @@
 #ifndef GAMECHARACTER_H
 #define GAMECHARACTER_H
 
-#include <QTime>
+#include <time.h>
 
 #include "gameobject.h"
+#include <QDebug>
+#include <QElapsedTimer>
 
 class GameHero: public GameObject
 {
@@ -14,7 +16,8 @@ public:
     bool isMovingRight;
     Direction direction;
     uint baseSpeed;
-    QTime lastTimeMoved;
+    QElapsedTimer timer;
+    uint lastTimeMoved;
 
     GameHero();
     ~GameHero();
