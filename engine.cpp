@@ -100,7 +100,7 @@ void Engine::render()
             renderTarget->draw(*object->getDrawable());
         }
     }
-    while ((object = tree.iterate(iterator)) != NULL && object->getZIndex() < 5000)
+    while ((object = tree.iterate(iterator)) != NULL)
     {
         object->resetCoordsStatus();
     }

@@ -117,7 +117,6 @@ BinarySearchTree<T>::~BinarySearchTree()
 template<typename T>
 T BinarySearchTree<T>::iterate(TreeNode<T> *&iterator)
 {
-    TreeNode<T> *tempIterator;
     if (iterator == 0)
     {
         iterator = root;
@@ -125,13 +124,10 @@ T BinarySearchTree<T>::iterate(TreeNode<T> *&iterator)
 
     // We must prevent returning the right element first
     // if there is no left child.
-    if (!iterator->left && !iterator->hasRightIterated)
+    if (!iterator->left && !iterator->hasLeftIterated && !iterator->hasRightIterated)
     {
-        tempIterator = iterator;
         iterator->hasLeftIterated = true;
-        iterator->hasRightIterated = true;
-        iterator = iterator->right;
-        return tempIterator->data;
+        return iterator->data;
     }
     if (iterator->left && !iterator->hasLeftIterated)
     {

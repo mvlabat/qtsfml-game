@@ -9,6 +9,7 @@ class GameData
 public:
     BinarySearchTree<RenderableObject *> *tree;
     GameHero hero;
+    GameHero heroClone;
 
     GameData(BinarySearchTree<RenderableObject *> *p_tree);
     ~GameData();

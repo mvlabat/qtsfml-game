@@ -15,6 +15,11 @@ void GameData::loadLevel()
 {
     tree->insert(hero.renderableObject);
     tree->insert(&hero.name);
+
+    /*heroClone.coords = sf::Vector2f(200, -20);
+    heroClone.name.text.setString("mvlabat's clone O_o");
+    tree->insert(heroClone.renderableObject);
+    tree->insert(&heroClone.name);*/
 }
 
 void GameData::processCoords(RenderableObject *object)
