@@ -12,6 +12,7 @@ RenderableObject::RenderableObject()
 RenderableObject::RenderableObject(unsigned int _zIndex) :
     hasCoordsPrepared(false),
     zIndex(_zIndex),
+    coords(sf::Vector2i(0, 0)),
     isVisible(true)
 {
 }
@@ -20,9 +21,14 @@ RenderableObject::~RenderableObject()
 {
 }
 
-const unsigned int RenderableObject::getZIndex()
+unsigned int RenderableObject::getZIndex() const
 {
     return zIndex;
+}
+
+void RenderableObject::resetCoordsStatus()
+{
+    hasCoordsPrepared = false;
 }
 
 /**
@@ -32,9 +38,12 @@ const unsigned int RenderableObject::getZIndex()
 RenderableText::RenderableText(unsigned int _zIndex) :
     RenderableObject::RenderableObject(_zIndex)
 {
+    text.setFont(Fonts::DefaultFont);
+    text.setCharacterSize(10);
+    text.setColor(sf::Color(255, 255, 255));
 }
 
-sf::Transformable *RenderableText::getTransofmable()
+sf::Transformable *RenderableText::getTransformable()
 {
     return &text;
 }
@@ -53,7 +62,13 @@ RenderableSprite::RenderableSprite(unsigned int _zIndex) :
 {
 }
 
-sf::Transformable *RenderableSprite::getTransofmable()
+void RenderableSprite::setTexture(const std::string& fileName)
+{
+    texture.loadFromFile(fileName);
+    sprite.setTexture(texture);
+}
+
+sf::Transformable *RenderableSprite::getTransformable()
 {
     return &sprite;
 }
@@ -67,7 +82,7 @@ sf::Drawable *RenderableSprite::getDrawable()
  * RenderableRectangle class definition.
  */
 
-sf::Transformable *RenderableRectangle::getTransofmable()
+sf::Transformable *RenderableRectangle::getTransformable()
 {
     return &rectangle;
 }

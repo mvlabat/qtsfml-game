@@ -3,17 +3,25 @@
 
 #include <SFML/System/Vector2.hpp>
 #include <SFML/Graphics.hpp>
+#include <string>
 
-enum zIndexes {
-    hero = 200,
-    monsters = 100,
+#include "fonts.h"
+
+enum ZIndexes {
+    Hero = 200,
+    Monsters = 100,
+    GameObjectFloatingText = 1000,
+    SystemText = 9999,
 };
+
+class GameData;
 
 class RenderableObject
 {
+    friend class GameData;
 protected:
     // This variable defines if the coords of the object
-    //were recalculated during recursive traversal.
+    // has been recalculated during recursive traversal.
     bool hasCoordsPrepared;
     // Objects with lower z-index are below.
     unsigned int zIndex;
@@ -30,21 +38,11 @@ public:
     RenderableObject();
     RenderableObject(unsigned int _zIndex);
     ~RenderableObject();
-    const unsigned int getZIndex();
-    virtual sf::Transformable *getTransofmable() = 0;
+    unsigned int getZIndex() const;
+    void resetCoordsStatus();
+    virtual sf::Transformable *getTransformable() = 0;
     virtual sf::Drawable *getDrawable() = 0;
 };
-
-/*class QueueableObject: public sf::Drawable, public sf::Transformable, public RenderableObject
-{
-    QueueableObject() :
-        sf::Drawable(),
-        sf::Transformable(),
-        RenderableObject(3)
-    {
-
-    }
-};*/
 
 class RenderableSprite: public RenderableObject
 {
@@ -53,7 +51,8 @@ public:
     sf::Texture texture;
 
     RenderableSprite(unsigned int _zIndex);
-    sf::Transformable *getTransofmable() override;
+    void setTexture(const std::string&);
+    sf::Transformable *getTransformable() override;
     sf::Drawable *getDrawable() override;
 };
 
@@ -63,7 +62,7 @@ public:
     sf::RectangleShape rectangle;
 
     RenderableRectangle(unsigned int _zIndex);
-    sf::Transformable *getTransofmable() override;
+    sf::Transformable *getTransformable() override;
     sf::Drawable *getDrawable() override;
 };
 
@@ -73,7 +72,7 @@ public:
     sf::Text text;
 
     RenderableText(unsigned int _zIndex);
-    sf::Transformable *getTransofmable() override;
+    sf::Transformable *getTransformable() override;
     sf::Drawable *getDrawable() override;
 };
 

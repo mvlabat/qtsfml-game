@@ -16,6 +16,7 @@
 #include "gamedata.h"
 #include "renderableobject.h"
 #include "binarysearchtree.h"
+#include "fonts.h"
 
 class QSFMLCanvas;
 
@@ -31,14 +32,12 @@ protected:
     GameSettings *settings;
     // Class which manages game controls.
     Controls controls;
-    // BST which is used for ordering drawed object by z-index.
+    // BST which is used for ordering renderable objects by z-index.
     BinarySearchTree<RenderableObject *> tree;
     // Class which manages all the game (current level) data.
     GameData *gameData;
     // Class which manages loading a level.
     Level level;
-    // Default font.
-    sf::Font font;
     // Text for rendering fps count.
     RenderableText fpsText;
     // FPS counter.

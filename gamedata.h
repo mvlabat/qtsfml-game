@@ -2,14 +2,18 @@
 #define GAMEDATA_H
 
 #include "gamehero.h"
+#include "binarysearchtree.h"
 
 class GameData
 {
 public:
-    GameData();
-    ~GameData();
-
+    BinarySearchTree<RenderableObject *> *tree;
     GameHero hero;
+
+    GameData(BinarySearchTree<RenderableObject *> *p_tree);
+    ~GameData();
+    void loadLevel();
+    void processCoords(RenderableObject *object);
 };
 
 #endif // GAMEDATA_H

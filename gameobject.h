@@ -4,10 +4,12 @@
 #include "renderableobject.h"
 
 class Engine;
+class GameData;
 
 class GameObject
 {
     friend class Engine;
+    friend class GameData;
 protected:
     RenderableSprite *renderableObject;
     uint healthPoints;
@@ -20,14 +22,14 @@ public:
 
     void setHealthPoints(uint points);
     void setMaxHealthPoints(uint points);
-    uint getHealthPoints();
-    uint getMaxHealthPoints();
+    uint getHealthPoints() const;
+    uint getMaxHealthPoints() const;
 
     // Defines if this object has to be added to the rendering queue.
     bool isQueueing;
 };
 
-enum Direction {
+enum class Direction {
     Up,
     UpRight,
     Right,

@@ -30,12 +30,12 @@ void GameObject::setMaxHealthPoints(uint points)
     maxHealthPoints = points;
 }
 
-uint GameObject::getHealthPoints()
+uint GameObject::getHealthPoints() const
 {
     return healthPoints;
 }
 
-uint GameObject::getMaxHealthPoints()
+uint GameObject::getMaxHealthPoints() const
 {
     return maxHealthPoints;
 }

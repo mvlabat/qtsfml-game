@@ -18,6 +18,7 @@ public:
     uint baseSpeed;
     QElapsedTimer timer;
     uint lastTimeMoved;
+    RenderableText name;
 
     GameHero();
     ~GameHero();
@@ -29,8 +30,8 @@ protected:
 
     void setManaPoints(uint points);
     void setMaxManaPoints(uint points);
-    uint getManaPoints();
-    uint getMaxManaPoints();
+    uint getManaPoints() const;
+    uint getMaxManaPoints() const;
 };
 
 #endif // GAMECHARACTER_H

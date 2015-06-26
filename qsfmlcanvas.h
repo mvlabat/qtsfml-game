@@ -15,7 +15,8 @@ class QSFMLCanvas : public QWidget, public sf::RenderWindow
     Q_OBJECT
 
 public:
-    QSFMLCanvas(QWidget* p_parentWindow, const QPoint& Position, const QSize& Size, unsigned int FrameTime = 0);
+    QSFMLCanvas(QWidget *p_parentWindow, const QPoint& Position, const QSize& Size, unsigned int FrameTime = 0);
+    QSFMLCanvas(QWidget *p_parentWindow, unsigned int FrameTime = 0);
     ~QSFMLCanvas();
 protected:
     virtual void OnInit();
@@ -24,8 +25,9 @@ protected:
     void keyReleaseEvent(QKeyEvent *);
 private:
     virtual QPaintEngine* paintEngine() const;
-    virtual void showEvent(QShowEvent*);
-    virtual void paintEvent(QPaintEvent*);
+    virtual void resizeEvent(QResizeEvent *);
+    virtual void showEvent(QShowEvent *);
+    virtual void paintEvent(QPaintEvent *);
     QWidget *parentWindow;
     QTimer renderTimer;
     bool   isInitialized;

@@ -1,19 +1,20 @@
 #include "gamehero.h"
 
 GameHero::GameHero() :
-    GameObject(new RenderableSprite(zIndexes::hero)),
+    GameObject(new RenderableSprite(ZIndexes::Hero)),
     isMovingUp(false),
     isMovingDown(false),
     isMovingLeft(false),
     isMovingRight(false),
     direction(Direction::None),
     baseSpeed(800),
-    lastTimeMoved(0)
+    lastTimeMoved(0),
+    name(ZIndexes::GameObjectFloatingText)
 {
     timer.start();
-    RenderableSprite *renderableHero = (RenderableSprite *)renderableObject;
-    renderableHero->texture.loadFromFile("molfar.png");
-    renderableHero->sprite.setTexture(renderableHero->texture);
+    renderableObject->setTexture("molfar.png");
+    name.parentObject = renderableObject;
+    name.text.setString("mvlabat");
 }
 
 GameHero::~GameHero()
@@ -65,7 +66,6 @@ void GameHero::move()
     chooseDirection();
 
     milliseconds = timer.elapsed() - lastTimeMoved;
-    qDebug() << lastTimeMoved << timer.elapsed() << milliseconds;
     lastTimeMoved = timer.elapsed();
     length = (float)baseSpeed * milliseconds / 10000;
     diagonalLength = length / sqrt(2);
@@ -104,14 +104,6 @@ void GameHero::move()
         lastTimeMoved = 0;
         timer.restart();
     }
-    if (coords.x > 400)
-    {
-        coords.x = 0;
-    }
-    if (coords.y > 400)
-    {
-        coords.y = 0;
-    }
 }
 
 void GameHero::setManaPoints(uint points)
@@ -131,12 +123,12 @@ void GameHero::setMaxManaPoints(uint points)
     maxManaPoints = points;
 }
 
-uint GameHero::getManaPoints()
+uint GameHero::getManaPoints() const
 {
     return manaPoints;
 }
 
-uint GameHero::getMaxManaPoints()
+uint GameHero::getMaxManaPoints() const
 {
     return maxManaPoints;
 }

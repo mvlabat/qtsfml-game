@@ -6,8 +6,8 @@ class GameSettings
 {
 public:
     GameSettings();
-    char getFps();
-    bool getVSync();
+    char getFps() const;
+    bool getVSync() const;
 
 protected:
     char fps;

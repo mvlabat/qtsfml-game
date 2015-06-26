@@ -1,18 +1,18 @@
 #include "gamesettings.h"
 
 GameSettings::GameSettings() :
-    fps(60),
+    fps(120),
     vSync(true)
 {
 
 }
 
-char GameSettings::getFps()
+char GameSettings::getFps() const
 {
     return fps;
 }
 
-bool GameSettings::getVSync()
+bool GameSettings::getVSync() const
 {
     return vSync;
 }

@@ -1,6 +1,6 @@
 #include "qsfmlcanvas.h"
 
-QSFMLCanvas::QSFMLCanvas(QWidget* p_parentWindow, const QPoint& Position, const QSize& Size, unsigned int FrameTime) :
+QSFMLCanvas::QSFMLCanvas(QWidget *p_parentWindow, const QPoint& Position, const QSize& Size, unsigned int FrameTime) :
     QWidget(p_parentWindow),
     parentWindow(p_parentWindow),
     isInitialized(false),
@@ -20,6 +20,33 @@ QSFMLCanvas::QSFMLCanvas(QWidget* p_parentWindow, const QPoint& Position, const 
     // Setup the widget geometry
     move(Position);
     resize(Size);
+
+    //parentWindow->setWindowState(Qt::WindowFullScreen);
+
+    // Setup the timer
+    renderTimer.setInterval(FrameTime);
+}
+
+QSFMLCanvas::QSFMLCanvas(QWidget *p_parentWindow, unsigned int FrameTime) :
+    QWidget(),
+    parentWindow(p_parentWindow),
+    isInitialized(false),
+    settings(),
+    engine(this, &settings)
+{
+    // Setup some states to allow direct rendering into the widget
+    setAttribute(Qt::WA_PaintOnScreen);
+    setAttribute(Qt::WA_OpaquePaintEvent);
+    setAttribute(Qt::WA_NoSystemBackground);
+
+    setVerticalSyncEnabled(settings.getVSync());
+
+    // Set strong focus to enable keyboard events to be received
+    setFocusPolicy(Qt::StrongFocus);
+
+    // Setup the widget geometry
+    //move(Position);
+    //resize(Size);
 
     //parentWindow->setWindowState(Qt::WindowFullScreen);
 
@@ -55,7 +82,14 @@ QPaintEngine* QSFMLCanvas::paintEngine() const
     return 0;
 }
 
-void QSFMLCanvas::paintEvent(QPaintEvent*)
+void QSFMLCanvas::resizeEvent(QResizeEvent *event)
+{
+    QWidget::resizeEvent(event);
+    sf::Window::setSize(sf::Vector2u((uint)size().width(), (uint)size().height()));
+    setView(sf::View(sf::FloatRect(0, 0, (uint)size().width(), (uint)size().height())));
+}
+
+void QSFMLCanvas::paintEvent(QPaintEvent *)
 {
     // Let the derived class do its specific stuff
     OnUpdate();

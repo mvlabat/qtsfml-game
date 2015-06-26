@@ -2,6 +2,7 @@
 #define CONTROLS_H
 
 #include <QKeyEvent>
+#include <QKeySequence>
 
 #include <gamehero.h>
 

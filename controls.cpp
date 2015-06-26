@@ -2,6 +2,7 @@
 
 void Controls::processPressedHeroControls(QKeyEvent *event)
 {
+    qDebug() << event->key() << event->nativeScanCode() << event->nativeVirtualKey();
     switch (event->key())
     {
         case Qt::Key_W:
