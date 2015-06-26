@@ -1,4 +1,4 @@
-#include "mycanvas.h"
+#include "qsfmlcanvas.h"
 #include <QApplication>
 #include <QFrame>
 #include <QBoxLayout>

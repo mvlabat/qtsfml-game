@@ -1,37 +1,9 @@
 #include "qsfmlcanvas.h"
 
-QSFMLCanvas::QSFMLCanvas(QWidget *p_parentWindow, const QPoint& Position, const QSize& Size, unsigned int FrameTime) :
-    QWidget(p_parentWindow),
-    parentWindow(p_parentWindow),
-    isInitialized(false),
-    settings(),
-    engine(this, &settings)
-{
-    // Setup some states to allow direct rendering into the widget
-    setAttribute(Qt::WA_PaintOnScreen);
-    setAttribute(Qt::WA_OpaquePaintEvent);
-    setAttribute(Qt::WA_NoSystemBackground);
-
-    setVerticalSyncEnabled(settings.getVSync());
-
-    // Set strong focus to enable keyboard events to be received
-    setFocusPolicy(Qt::StrongFocus);
-
-    // Setup the widget geometry
-    move(Position);
-    resize(Size);
-
-    //parentWindow->setWindowState(Qt::WindowFullScreen);
-
-    // Setup the timer
-    renderTimer.setInterval(FrameTime);
-}
-
 QSFMLCanvas::QSFMLCanvas(QWidget *p_parentWindow, unsigned int FrameTime) :
     QWidget(),
     parentWindow(p_parentWindow),
     isInitialized(false),
-    settings(),
     engine(this, &settings)
 {
     // Setup some states to allow direct rendering into the widget
@@ -44,14 +16,12 @@ QSFMLCanvas::QSFMLCanvas(QWidget *p_parentWindow, unsigned int FrameTime) :
     // Set strong focus to enable keyboard events to be received
     setFocusPolicy(Qt::StrongFocus);
 
-    // Setup the widget geometry
-    //move(Position);
-    //resize(Size);
-
     //parentWindow->setWindowState(Qt::WindowFullScreen);
 
     // Setup the timer
     renderTimer.setInterval(FrameTime);
+
+    this->setMouseTracking(true);
 }
 
 #ifdef Q_WS_X11
@@ -75,6 +45,24 @@ void QSFMLCanvas::showEvent(QShowEvent*)
         renderTimer.start();
         isInitialized = true;
     }
+    QPoint p = this->mapFromGlobal(QCursor::pos());
+    if (p.rx() > size().width())
+    {
+        system.mousePosition.x = (uint)size().width();
+    }
+    else
+    {
+        system.mousePosition.x = (uint)p.rx();
+    }
+    if (p.ry() > size().height())
+    {
+        system.mousePosition.y = (uint)size().height();
+    }
+    else
+    {
+        system.mousePosition.y = (uint)p.ry();
+    }
+    qDebug() << system.mousePosition.x << system.mousePosition.y;
 }
 
 QPaintEngine* QSFMLCanvas::paintEngine() const
@@ -85,7 +73,8 @@ QPaintEngine* QSFMLCanvas::paintEngine() const
 void QSFMLCanvas::resizeEvent(QResizeEvent *event)
 {
     QWidget::resizeEvent(event);
-    sf::Window::setSize(sf::Vector2u((uint)size().width(), (uint)size().height()));
+    system.windowSize = sf::Vector2u((uint)size().width(), (uint)size().height());
+    sf::Window::setSize(system.windowSize);
     setView(sf::View(sf::FloatRect(0, 0, (uint)size().width(), (uint)size().height())));
 }
 
@@ -113,6 +102,13 @@ void QSFMLCanvas::OnUpdate()
     // Clear screen
     clear(sf::Color(0, 0, 0));
     engine.render();
+}
+
+void QSFMLCanvas::mouseMoveEvent(QMouseEvent *mouseEvent)
+{
+    QPointF p = mouseEvent->localPos();
+    system.mousePosition.x = p.rx();
+    system.mousePosition.y = p.ry();
 }
 
 void QSFMLCanvas::keyPressEvent(QKeyEvent *keyEvent)

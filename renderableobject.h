@@ -4,6 +4,7 @@
 #include <SFML/System/Vector2.hpp>
 #include <SFML/Graphics.hpp>
 #include <string>
+#include <QDebug>
 
 #include "fonts.h"
 

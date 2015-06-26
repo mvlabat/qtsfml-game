@@ -23,7 +23,9 @@ SOURCES += main.cpp\
     gamehero.cpp \
     renderableobject.cpp \
     controls.cpp \
-    fonts.cpp
+    fonts.cpp \
+    system.cpp \
+    camera.cpp
 
 HEADERS  += qsfmlcanvas.h \
     engine.h \
@@ -35,7 +37,9 @@ HEADERS  += qsfmlcanvas.h \
     gamehero.h \
     renderableobject.h \
     controls.h \
-    fonts.h
+    fonts.h \
+    system.h \
+    camera.h
 
 LIBS += -lsfml-audio\
         -lsfml-graphics\

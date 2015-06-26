@@ -41,6 +41,7 @@ RenderableText::RenderableText(unsigned int _zIndex) :
     text.setFont(Fonts::DefaultFont);
     text.setCharacterSize(10);
     text.setColor(sf::Color(255, 255, 255));
+    qDebug() << "success";
 }
 
 sf::Transformable *RenderableText::getTransformable()
